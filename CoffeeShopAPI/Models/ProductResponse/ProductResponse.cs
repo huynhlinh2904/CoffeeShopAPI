@@ -1,4 +1,4 @@
-﻿namespace CoffeeShopAPI.Models
+﻿namespace CoffeeShopAPI.Models.ProductResponse
 {
     public class ProductResponse
     {

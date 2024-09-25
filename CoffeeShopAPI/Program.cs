@@ -1,4 +1,7 @@
+using CoffeeShopAPI.CoreModel;
 using CoffeeShopAPI.Data;
+using CoffeeShopAPI.Repositories.Interfaces;
+using CoffeeShopAPI.Repositories.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +17,10 @@ builder.Services.AddDbContext<MilkTea2024Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CoffeeShopAPI"));
 
 });
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(Mappers));
+builder.Services.AddScoped<IProduct, ProductService>();
+
 
 var app = builder.Build();
 
