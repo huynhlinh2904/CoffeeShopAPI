@@ -22,26 +22,43 @@ namespace CoffeeShopAPI.Repositories.Services
         {
             APIResponse<CreateResponse> response = new();
             var checkProductId = await db.Products.Where(p => p.ProductId == req.ProductId).SingleOrDefaultAsync();
-            if (checkProductId == null)
+            if (checkProductId != null)
             {
-                response.ToFailedResponse("sản phẩm không tồn tại", StatusCodes.Status400BadRequest);
+                response.ToFailedResponse("trùng mã sản phẩm", StatusCodes.Status400BadRequest);
+                return response;
+            }
+            var category = await db.Categories.FirstOrDefaultAsync(c => c.CategoryName == req.CategoryName);
+            if (category == null)
+            {
+                response.ToFailedResponse("Danh mục không tồn tại", StatusCodes.Status400BadRequest);
                 return response;
             }
             var id = Guid.NewGuid();
-            var category = await db.Categories.Where(c => c.CategoryName == req.CategoryName).SingleOrDefaultAsync();
-            CreateRequest product = new CreateRequest()
+            Product product = new Product()
             {
                 ProductId = id,
                 ProductName = req.ProductName,
                 Price = req.Price,
                 BestSeller = req.BestSeller,
                 Status = true,
-                CategoryName = req.CategoryName,
+                Category = category,
             };
-            //await db.Products.AddAsync(product);
+            await db.Products.AddAsync(product);
             await db.SaveChangesAsync();
-            var map = mapper.Map<Product>(product);
+
+            CreateResponse createResponse = new CreateResponse()
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                Price = product.Price,
+                BestSeller= product.BestSeller,
+                Status = product.Status,
+                CategoryName = category.CategoryName ?? "",
+            };
+
+            var map = mapper.Map<CreateResponse>(createResponse);
             response.ToSuccessResponse("tạo sản phảm thành công", StatusCodes.Status200OK);
+            response.Data = map;
             return response;
         }
 
@@ -54,15 +71,15 @@ namespace CoffeeShopAPI.Repositories.Services
             c => c.CategoryId, // Inner key selector (Category.CategoryId)
             (p, c) => new { Product = p, Category = c }) // Result selector
             .Select(pc => new GetResponse
-    {
-        ProductName = pc.Product.ProductName ?? "",
-        Price = pc.Product.Price,
-        Status = pc.Product.Status,
-        BestSeller = pc.Product.BestSeller,
-        CategoryId = pc.Product.CategoryId,
-        CategoryName = pc.Category.CategoryName ?? ""
-    })
-    .ToListAsync();
+            {
+                ProductName = pc.Product.ProductName ?? "",
+                Price = pc.Product.Price,
+                Status = pc.Product.Status,
+                BestSeller = pc.Product.BestSeller,
+                CategoryId = pc.Product.CategoryId,
+                CategoryName = pc.Category.CategoryName ?? ""
+            }).ToListAsync();
+
             if (products == null)
             {
                 response.ToFailedResponse("sản phẩm không tồn tại", StatusCodes.Status404NotFound);

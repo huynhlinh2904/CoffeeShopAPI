@@ -1,4 +1,5 @@
-﻿using CoffeeShopAPI.Repositories.Interfaces;
+﻿using CoffeeShopAPI.Models.ProductRequest;
+using CoffeeShopAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoffeeShopAPI.Controllers
@@ -29,6 +30,24 @@ namespace CoffeeShopAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Lỗi từ backend.");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(CreateRequest req)
+        {
+            try
+            {
+                var result = await product.CreateProductsAsync(req);
+                if (result == null)
+                {
+                    return BadRequest(result);
+                }
+                return Ok(result);
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "lỗi từ backend");
             }
         }
     }
