@@ -38,7 +38,8 @@ namespace CoffeeShopAPI.Repositories.Services
             {
                 ProductId = id,
                 ProductName = req.ProductName,
-                Price = req.Price,
+                PriceOfSizeM = req.PriceOfSizeM,
+                PriceOfSizeL = req.PriceOfSizeL,
                 BestSeller = req.BestSeller,
                 Status = true,
                 Category = category,
@@ -50,8 +51,9 @@ namespace CoffeeShopAPI.Repositories.Services
             {
                 ProductId = product.ProductId,
                 ProductName = product.ProductName,
-                Price = product.Price,
-                BestSeller= product.BestSeller,
+                PriceOfSizeM = product.PriceOfSizeM,
+                PriceOfSizeL = product.PriceOfSizeL,
+                BestSeller = product.BestSeller,
                 Status = product.Status,
                 CategoryName = category.CategoryName ?? "",
             };
@@ -73,7 +75,8 @@ namespace CoffeeShopAPI.Repositories.Services
             .Select(pc => new GetResponse
             {
                 ProductName = pc.Product.ProductName ?? "",
-                Price = pc.Product.Price,
+                PriceOfSizeM = pc.Product.PriceOfSizeM,
+                PriceOfSizeL = pc.Product.PriceOfSizeL,
                 Status = pc.Product.Status,
                 BestSeller = pc.Product.BestSeller,
                 CategoryId = pc.Product.CategoryId,

@@ -7,8 +7,8 @@ namespace CoffeeShopAPI.CoreModel
     {
         public Mappers() 
         {
-            CreateMap<Data.Product , Models.ProductResponse.GetResponse >().ReverseMap();
-            CreateMap<Data.Product, Models.ProductResponse.CreateResponse>().ReverseMap();
+            CreateMap<Data.Product , GetResponse >().ReverseMap();
+            CreateMap<Data.Product, CreateResponse>().ReverseMap();
         }
     }
 }
