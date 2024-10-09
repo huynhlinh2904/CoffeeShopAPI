@@ -9,6 +9,7 @@ namespace CoffeeShopAPI.CoreModel
         {
             CreateMap<Data.Product , GetResponse >().ReverseMap();
             CreateMap<Data.Product, CreateResponse>().ReverseMap();
+            CreateMap<Data.Category, CreateCategoryResponse>().ReverseMap();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CoffeeShopAPI.CoreModel;
 using CoffeeShopAPI.Data;
+using CoffeeShopAPI.Models.Request.CategoryRequest;
 using CoffeeShopAPI.Models.Response.ProductResponse;
 using CoffeeShopAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,30 @@ namespace CoffeeShopAPI.Repositories.Services
             this.mapper = mapper;
         }
 
+        public async Task<APIResponse<CreateCategoryResponse>> CreateCategory(CreateCategoryRequest request)
+        {
+            APIResponse<CreateCategoryResponse> response = new();
+            var id = Guid.NewGuid();
+            Category result = new Category()
+            {
+                CategoryId = id,
+                CategoryName = request.CategoryName,
+                Status = true,
+            };
+
+            if(result.CategoryId == request.CategoryId)
+            {
+                response.ToFailedResponse("id trùng lặp không khởi tạo", StatusCodes.Status400BadRequest);
+                return response;
+            }
+            await db.Categories.AddAsync(result);
+            await db.SaveChangesAsync();
+            var map = mapper.Map<CreateCategoryResponse>(result);
+            response.ToSuccessResponse(response.Data = map, "tạo thành công", StatusCodes.Status200OK);
+            return response;
+
+        }
+
         public async Task<APIResponse<IEnumerable<CreateCategoryResponse>>> GetCategory()
         {
             APIResponse<IEnumerable<CreateCategoryResponse>> response = new();
@@ -26,7 +51,7 @@ namespace CoffeeShopAPI.Repositories.Services
                 response.ToFailedResponse("không tồn tại loại nào", StatusCodes.Status404NotFound);
                 return response;
             }
-            List<CreateCategoryResponse> categories = new List<CreateCategoryResponse>();
+            List<CreateCategoryResponse> result = new();
             foreach (var item in category) 
             {
                 var categoryResponse = new CreateCategoryResponse();
@@ -35,15 +60,17 @@ namespace CoffeeShopAPI.Repositories.Services
                     categoryResponse.CategoryName = item.CategoryName ?? "";
                     categoryResponse.Status = item.Status;
                 }
-                categories.Add(categoryResponse);
+                result.Add(categoryResponse);
             }
-            if (categories == null) 
+            if (result == null) 
             {
                 response.ToFailedResponse("không tồn tại category", StatusCodes.Status404NotFound);
                 return response;
             }
-            response.ToSuccessResponse(response.Data = categories, "lấy danh sách thành công", StatusCodes.Status200OK);
+            response.ToSuccessResponse(response.Data = result, "lấy danh sách thành công", StatusCodes.Status200OK);
             return response;
         }
+
+        
     }
 }
