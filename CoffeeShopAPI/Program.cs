@@ -19,7 +19,10 @@ builder.Services.AddDbContext<MilkTea2024Context>(options =>
 });
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(Mappers));
+
+// register service
 builder.Services.AddScoped<IProduct, ProductService>();
+builder.Services.AddScoped<ICategory, CategoryService>();
 
 
 var app = builder.Build();

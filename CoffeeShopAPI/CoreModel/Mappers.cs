@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CoffeeShopAPI.Models.ProductResponse;
+using CoffeeShopAPI.Models.Response.ProductResponse;
 
 namespace CoffeeShopAPI.CoreModel
 {

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CoffeeShopAPI.CoreModel;
 using CoffeeShopAPI.Data;
-using CoffeeShopAPI.Models.ProductRequest;
-using CoffeeShopAPI.Models.ProductResponse;
+using CoffeeShopAPI.Models.Request.ProductRequest;
+using CoffeeShopAPI.Models.Response.ProductResponse;
 using CoffeeShopAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -59,8 +59,7 @@ namespace CoffeeShopAPI.Repositories.Services
             };
 
             var map = mapper.Map<CreateResponse>(createResponse);
-            response.ToSuccessResponse("tạo sản phảm thành công", StatusCodes.Status200OK);
-            response.Data = map;
+            response.ToSuccessResponse(response.Data = map,"tạo sản phảm thành công", StatusCodes.Status200OK);
             return response;
         }
 
@@ -89,8 +88,7 @@ namespace CoffeeShopAPI.Repositories.Services
                 return response;
             }
             var map = mapper.Map<IEnumerable<GetResponse>>(products);
-            response.ToSuccessResponse("lấy danh sách thành công", StatusCodes.Status200OK);
-            response.Data = map;
+            response.ToSuccessResponse(response.Data = map,"lấy danh sách thành công", StatusCodes.Status200OK);
             return response;
         }
     }

@@ -1,4 +1,4 @@
-﻿using CoffeeShopAPI.Models.ProductRequest;
+﻿using CoffeeShopAPI.Models.Request.ProductRequest;
 using CoffeeShopAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

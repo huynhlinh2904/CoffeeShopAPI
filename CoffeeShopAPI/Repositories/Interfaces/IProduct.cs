@@ -1,6 +1,6 @@
 ﻿using CoffeeShopAPI.CoreModel;
-using CoffeeShopAPI.Models.ProductRequest;
-using CoffeeShopAPI.Models.ProductResponse;
+using CoffeeShopAPI.Models.Request.ProductRequest;
+using CoffeeShopAPI.Models.Response.ProductResponse;
 
 namespace CoffeeShopAPI.Repositories.Interfaces
 {

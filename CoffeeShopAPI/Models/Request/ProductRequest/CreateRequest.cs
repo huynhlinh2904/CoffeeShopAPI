@@ -1,4 +1,4 @@
-﻿namespace CoffeeShopAPI.Models.ProductRequest
+﻿namespace CoffeeShopAPI.Models.Request.ProductRequest
 {
     public class CreateRequest
     {
